@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		546EF71A2F47904A00895A24 /* ScrubberBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7032F47904A00895A24 /* ScrubberBubbleView.swift */; };
+		546EF71B2F47904A00895A24 /* ParticleSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7112F47904A00895A24 /* ParticleSystem.swift */; };
+		546EF71C2F47904A00895A24 /* SunArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70B2F47904A00895A24 /* SunArcView.swift */; };
+		546EF71D2F47904A00895A24 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70F2F47904A00895A24 /* MotionManager.swift */; };
+		546EF71E2F47904A00895A24 /* HourlyForecastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7162F47904A00895A24 /* HourlyForecastCard.swift */; };
+		546EF71F2F47904A00895A24 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7172F47904A00895A24 /* SearchView.swift */; };
+		546EF7202F47904A00895A24 /* AnimatedGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70E2F47904A00895A24 /* AnimatedGradientBackground.swift */; };
+		546EF7212F47904A00895A24 /* DailyForecastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7152F47904A00895A24 /* DailyForecastCard.swift */; };
+		546EF7222F47904A00895A24 /* ParallaxModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7102F47904A00895A24 /* ParallaxModifier.swift */; };
+		546EF7232F47904A00895A24 /* TemperatureCurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7052F47904A00895A24 /* TemperatureCurveView.swift */; };
+		546EF7242F47904A00895A24 /* WeatherParticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7122F47904A00895A24 /* WeatherParticleView.swift */; };
+		546EF7252F47904A00895A24 /* StateViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7182F47904A00895A24 /* StateViews.swift */; };
+		546EF7262F47904A00895A24 /* UVIndexGauge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70C2F47904A00895A24 /* UVIndexGauge.swift */; };
+		546EF7272F47904A00895A24 /* CurrentWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7142F47904A00895A24 /* CurrentWeatherView.swift */; };
+		546EF7282F47904A00895A24 /* DetailGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7072F47904A00895A24 /* DetailGaugeView.swift */; };
+		546EF7292F47904A00895A24 /* ExpandableDetailCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7082F47904A00895A24 /* ExpandableDetailCard.swift */; };
+		546EF72A2F47904A00895A24 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70A2F47904A00895A24 /* GradientBackground.swift */; };
+		546EF72B2F47904A00895A24 /* FrostedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7092F47904A00895A24 /* FrostedCard.swift */; };
+		546EF72C2F47904A00895A24 /* SplineInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7042F47904A00895A24 /* SplineInterpolation.swift */; };
 		5472992B2F40636C00281F8D /* WeatherKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5472992A2F40636C00281F8D /* WeatherKit */; };
 		5472992D2F40636C00281F8D /* WeatherUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5472992C2F40636C00281F8D /* WeatherUI */; };
 		A1000001000000000000001 /* WeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000011 /* WeatherApp.swift */; };
@@ -15,6 +34,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		546EF7032F47904A00895A24 /* ScrubberBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrubberBubbleView.swift; sourceTree = "<group>"; };
+		546EF7042F47904A00895A24 /* SplineInterpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplineInterpolation.swift; sourceTree = "<group>"; };
+		546EF7052F47904A00895A24 /* TemperatureCurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureCurveView.swift; sourceTree = "<group>"; };
+		546EF7072F47904A00895A24 /* DetailGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGaugeView.swift; sourceTree = "<group>"; };
+		546EF7082F47904A00895A24 /* ExpandableDetailCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableDetailCard.swift; sourceTree = "<group>"; };
+		546EF7092F47904A00895A24 /* FrostedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrostedCard.swift; sourceTree = "<group>"; };
+		546EF70A2F47904A00895A24 /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
+		546EF70B2F47904A00895A24 /* SunArcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunArcView.swift; sourceTree = "<group>"; };
+		546EF70C2F47904A00895A24 /* UVIndexGauge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UVIndexGauge.swift; sourceTree = "<group>"; };
+		546EF70E2F47904A00895A24 /* AnimatedGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedGradientBackground.swift; sourceTree = "<group>"; };
+		546EF70F2F47904A00895A24 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		546EF7102F47904A00895A24 /* ParallaxModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxModifier.swift; sourceTree = "<group>"; };
+		546EF7112F47904A00895A24 /* ParticleSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleSystem.swift; sourceTree = "<group>"; };
+		546EF7122F47904A00895A24 /* WeatherParticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherParticleView.swift; sourceTree = "<group>"; };
+		546EF7142F47904A00895A24 /* CurrentWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherView.swift; sourceTree = "<group>"; };
+		546EF7152F47904A00895A24 /* DailyForecastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecastCard.swift; sourceTree = "<group>"; };
+		546EF7162F47904A00895A24 /* HourlyForecastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCard.swift; sourceTree = "<group>"; };
+		546EF7172F47904A00895A24 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		546EF7182F47904A00895A24 /* StateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViews.swift; sourceTree = "<group>"; };
 		A1000001000000000000010 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000001000000000000011 /* WeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApp.swift; sourceTree = "<group>"; };
 		A1000001000000000000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,9 +73,64 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		546EF7062F47904A00895A24 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				546EF7032F47904A00895A24 /* ScrubberBubbleView.swift */,
+				546EF7042F47904A00895A24 /* SplineInterpolation.swift */,
+				546EF7052F47904A00895A24 /* TemperatureCurveView.swift */,
+			);
+			name = Charts;
+			path = WeatherApp/Charts;
+			sourceTree = "<group>";
+		};
+		546EF70D2F47904A00895A24 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				546EF7072F47904A00895A24 /* DetailGaugeView.swift */,
+				546EF7082F47904A00895A24 /* ExpandableDetailCard.swift */,
+				546EF7092F47904A00895A24 /* FrostedCard.swift */,
+				546EF70A2F47904A00895A24 /* GradientBackground.swift */,
+				546EF70B2F47904A00895A24 /* SunArcView.swift */,
+				546EF70C2F47904A00895A24 /* UVIndexGauge.swift */,
+			);
+			name = Components;
+			path = WeatherApp/Components;
+			sourceTree = "<group>";
+		};
+		546EF7132F47904A00895A24 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				546EF70E2F47904A00895A24 /* AnimatedGradientBackground.swift */,
+				546EF70F2F47904A00895A24 /* MotionManager.swift */,
+				546EF7102F47904A00895A24 /* ParallaxModifier.swift */,
+				546EF7112F47904A00895A24 /* ParticleSystem.swift */,
+				546EF7122F47904A00895A24 /* WeatherParticleView.swift */,
+			);
+			name = Effects;
+			path = WeatherApp/Effects;
+			sourceTree = "<group>";
+		};
+		546EF7192F47904A00895A24 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				546EF7142F47904A00895A24 /* CurrentWeatherView.swift */,
+				546EF7152F47904A00895A24 /* DailyForecastCard.swift */,
+				546EF7162F47904A00895A24 /* HourlyForecastCard.swift */,
+				546EF7172F47904A00895A24 /* SearchView.swift */,
+				546EF7182F47904A00895A24 /* StateViews.swift */,
+			);
+			name = Views;
+			path = WeatherApp/Views;
+			sourceTree = "<group>";
+		};
 		A1000001000000000000030 = {
 			isa = PBXGroup;
 			children = (
+				546EF7062F47904A00895A24 /* Charts */,
+				546EF70D2F47904A00895A24 /* Components */,
+				546EF7132F47904A00895A24 /* Effects */,
+				546EF7192F47904A00895A24 /* Views */,
 				A1000001000000000000031 /* WeatherApp */,
 				A1000001000000000000032 /* Products */,
 			);
@@ -135,6 +228,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				546EF71A2F47904A00895A24 /* ScrubberBubbleView.swift in Sources */,
+				546EF71B2F47904A00895A24 /* ParticleSystem.swift in Sources */,
+				546EF71C2F47904A00895A24 /* SunArcView.swift in Sources */,
+				546EF71D2F47904A00895A24 /* MotionManager.swift in Sources */,
+				546EF71E2F47904A00895A24 /* HourlyForecastCard.swift in Sources */,
+				546EF71F2F47904A00895A24 /* SearchView.swift in Sources */,
+				546EF7202F47904A00895A24 /* AnimatedGradientBackground.swift in Sources */,
+				546EF7212F47904A00895A24 /* DailyForecastCard.swift in Sources */,
+				546EF7222F47904A00895A24 /* ParallaxModifier.swift in Sources */,
+				546EF7232F47904A00895A24 /* TemperatureCurveView.swift in Sources */,
+				546EF7242F47904A00895A24 /* WeatherParticleView.swift in Sources */,
+				546EF7252F47904A00895A24 /* StateViews.swift in Sources */,
+				546EF7262F47904A00895A24 /* UVIndexGauge.swift in Sources */,
+				546EF7272F47904A00895A24 /* CurrentWeatherView.swift in Sources */,
+				546EF7282F47904A00895A24 /* DetailGaugeView.swift in Sources */,
+				546EF7292F47904A00895A24 /* ExpandableDetailCard.swift in Sources */,
+				546EF72A2F47904A00895A24 /* GradientBackground.swift in Sources */,
+				546EF72B2F47904A00895A24 /* FrostedCard.swift in Sources */,
+				546EF72C2F47904A00895A24 /* SplineInterpolation.swift in Sources */,
 				A1000001000000000000002 /* ContentView.swift in Sources */,
 				A1000001000000000000001 /* WeatherApp.swift in Sources */,
 			);
