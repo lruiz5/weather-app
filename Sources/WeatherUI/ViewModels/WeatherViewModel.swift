@@ -32,27 +32,21 @@ public final class WeatherViewModel {
 
         do {
             let coordinate = try await locationManager.requestLocation()
-            
-            // Try to get city name from geocoding API
-            let locations = try await repository.searchLocations(
-                query: "\(coordinate.latitude),\(coordinate.longitude)"
+
+            // Reverse-geocode coordinates to get actual city name
+            let clLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            let geocoder = CLGeocoder()
+            let placemarks = try? await geocoder.reverseGeocodeLocation(clLocation)
+            let placemark = placemarks?.first
+
+            let location = Location(
+                name: placemark?.locality ?? "Current Location",
+                latitude: coordinate.latitude,
+                longitude: coordinate.longitude,
+                country: placemark?.country,
+                admin1: placemark?.administrativeArea
             )
-            
-            let location: Location
-            if let foundLocation = locations.first {
-                // Use the geocoded location with proper city name
-                location = foundLocation
-            } else {
-                // Fallback to coordinates only
-                location = Location(
-                    name: "Current Location",
-                    latitude: coordinate.latitude,
-                    longitude: coordinate.longitude,
-                    country: nil,
-                    admin1: nil
-                )
-            }
-            
+
             currentLocation = location
             await loadWeather(for: location)
         } catch {

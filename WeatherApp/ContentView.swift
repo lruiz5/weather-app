@@ -3,41 +3,50 @@ import WeatherKit
 import WeatherUI
 
 struct ContentView: View {
-    @State private var viewModel = WeatherViewModel(
-        repository: WeatherRepository()
-    )
+    @State private var viewModel = WeatherViewModel(repository: WeatherRepository())
     @State private var searchText = ""
     @State private var showingSearch = false
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .scaleEffect(1.5)
-                            .padding()
-                    } else if let weather = viewModel.currentWeather {
-                        currentWeatherView(weather)
-                        hourlyForecastView
-                        dailyForecastView
-                    } else if let errorMessage = viewModel.errorMessage {
-                        errorView(errorMessage)
-                    } else {
-                        emptyStateView
+        backgroundGradient
+            .ignoresSafeArea()
+            .overlay {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 16) {
+                        if viewModel.isLoading {
+                            loadingView
+                        } else if let error = viewModel.errorMessage, viewModel.currentWeather == nil {
+                            errorView(error)
+                        } else if viewModel.currentWeather != nil {
+                            myLocationCard
+                            if !viewModel.hourlyForecast.isEmpty {
+                                hourlyForecastCard
+                            }
+                            if !viewModel.dailyForecast.isEmpty {
+                                dailyForecastCard
+                            }
+                        } else {
+                            emptyStateView
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 40)
                 }
-                .padding()
-            }
-            .navigationTitle(viewModel.currentLocation?.name ?? "Weather")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingSearch = true
-                    } label: {
-                        Image(systemName: "magnifyingglass")
+                .safeAreaInset(edge: .top) {
+                    HStack {
+                        Spacer()
+                        Button { showingSearch = true } label: {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(width: 36, height: 36)
+                                .background(.white.opacity(0.2))
+                                .clipShape(Circle())
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+                    .padding(.bottom, 4)
                 }
             }
             .task {
@@ -46,199 +55,362 @@ struct ContentView: View {
             .sheet(isPresented: $showingSearch) {
                 searchView
             }
+    }
+
+    // MARK: - Background
+
+    private var backgroundGradient: LinearGradient {
+        LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom)
+    }
+
+    private var gradientColors: [Color] {
+        guard let weather = viewModel.currentWeather else {
+            return [Color(red: 0.18, green: 0.35, blue: 0.60), Color(red: 0.10, green: 0.20, blue: 0.38)]
+        }
+        if !weather.isDay {
+            return [Color(red: 0.08, green: 0.13, blue: 0.25), Color(red: 0.04, green: 0.08, blue: 0.17)]
+        }
+        switch weather.condition {
+        case .clear:
+            return [Color(red: 0.29, green: 0.56, blue: 0.89), Color(red: 0.53, green: 0.80, blue: 0.95)]
+        case .partlyCloudy:
+            return [Color(red: 0.34, green: 0.54, blue: 0.78), Color(red: 0.50, green: 0.68, blue: 0.88)]
+        case .cloudy, .overcast, .fog:
+            return [Color(red: 0.42, green: 0.49, blue: 0.58), Color(red: 0.57, green: 0.63, blue: 0.71)]
+        case .rain, .drizzle, .showers, .freezingRain:
+            return [Color(red: 0.25, green: 0.33, blue: 0.44), Color(red: 0.16, green: 0.22, blue: 0.32)]
+        case .snow:
+            return [Color(red: 0.53, green: 0.68, blue: 0.84), Color(red: 0.70, green: 0.82, blue: 0.93)]
+        case .thunderstorm:
+            return [Color(red: 0.18, green: 0.19, blue: 0.27), Color(red: 0.10, green: 0.11, blue: 0.18)]
+        case .unknown:
+            return [Color(red: 0.18, green: 0.35, blue: 0.60), Color(red: 0.10, green: 0.20, blue: 0.38)]
         }
     }
 
-    // MARK: - Current Weather
+    // MARK: - My Location Card
 
-    @ViewBuilder
-    private func currentWeatherView(_ weather: Weather) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: weather.condition.systemIconName)
-                .font(.system(size: 80))
-                .symbolRenderingMode(.multicolor)
-
-            Text("\(Int(weather.temperature))°")
-                .font(.system(size: 72, weight: .thin))
-
-            Text(weather.condition.description)
-                .font(.title2)
-                .foregroundStyle(.secondary)
-
-            HStack(spacing: 32) {
-                weatherDetail(
-                    icon: "wind",
-                    value: "\(Int(weather.windSpeed)) km/h"
-                )
+    private var myLocationCard: some View {
+        VStack(spacing: 0) {
+            // Header
+            VStack(spacing: 3) {
+                Text("My Location")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white.opacity(0.75))
+                    .tracking(1.5)
+                    .textCase(.uppercase)
+                if let location = viewModel.currentLocation {
+                    Text(location.name)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                }
             }
-        }
-        .padding()
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-    }
+            .padding(.bottom, 20)
 
-    @ViewBuilder
-    private func weatherDetail(icon: String, value: String) -> some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon)
-                .font(.title3)
-            Text(value)
-                .font(.caption)
-        }
-    }
+            if let weather = viewModel.currentWeather {
+                // Icon
+                Image(systemName: weather.condition.systemIconName)
+                    .font(.system(size: 72))
+                    .symbolRenderingMode(.multicolor)
+                    .shadow(color: .black.opacity(0.15), radius: 6, y: 3)
+                    .padding(.bottom, 4)
 
-    // MARK: - Hourly Forecast
+                // Temperature
+                Text("\(Int(weather.temperature))°")
+                    .font(.system(size: 96, weight: .thin))
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 2)
 
-    @ViewBuilder
-    private var hourlyForecastView: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Hourly Forecast")
-                .font(.headline)
+                // Condition
+                Text(weather.condition.description)
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white.opacity(0.85))
+                    .padding(.bottom, 10)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(viewModel.hourlyForecast.prefix(24)) { forecast in
-                        hourlyForecastCard(forecast)
+                // Feels like + H/L
+                HStack(spacing: 6) {
+                    if let feelsLike = weather.feelsLike {
+                        Text("Feels like \(Int(feelsLike))°")
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                    if let today = viewModel.dailyForecast.first {
+                        if weather.feelsLike != nil {
+                            Text("·").foregroundStyle(.white.opacity(0.45))
+                        }
+                        Text("H:\(Int(today.temperatureHigh))°")
+                            .foregroundStyle(.white.opacity(0.85))
+                        Text("L:\(Int(today.temperatureLow))°")
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                }
+                .font(.subheadline)
+                .padding(.bottom, 20)
+
+                // Sunrise / Sunset
+                if let today = viewModel.dailyForecast.first,
+                   today.sunrise != nil || today.sunset != nil {
+                    Rectangle()
+                        .fill(.white.opacity(0.25))
+                        .frame(height: 0.5)
+                        .padding(.bottom, 16)
+
+                    HStack(alignment: .top) {
+                        if let sunrise = today.sunrise {
+                            VStack(alignment: .leading, spacing: 5) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "sunrise.fill")
+                                        .symbolRenderingMode(.multicolor)
+                                        .font(.caption)
+                                    Text("SUNRISE")
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.white.opacity(0.65))
+                                        .tracking(0.8)
+                                }
+                                Text(sunrise, style: .time)
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                            }
+                        }
+
+                        Spacer()
+
+                        if let sunset = today.sunset {
+                            VStack(alignment: .trailing, spacing: 5) {
+                                HStack(spacing: 4) {
+                                    Text("SUNSET")
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.white.opacity(0.65))
+                                        .tracking(0.8)
+                                    Image(systemName: "sunset.fill")
+                                        .symbolRenderingMode(.multicolor)
+                                        .font(.caption)
+                                }
+                                Text(sunset, style: .time)
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                            }
+                        }
                     }
                 }
             }
         }
-        .padding()
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(.horizontal, 24)
+        .padding(.vertical, 28)
+        .frame(maxWidth: .infinity)
+        .background(.white.opacity(0.14))
+        .clipShape(RoundedRectangle(cornerRadius: 24))
     }
 
-    @ViewBuilder
-    private func hourlyForecastCard(_ forecast: HourlyForecast) -> some View {
-        VStack(spacing: 8) {
-            Text(forecast.time, style: .time)
+    // MARK: - Hourly Forecast Card
+
+    private var hourlyForecastCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("HOURLY FORECAST", systemImage: "clock")
                 .font(.caption)
-
-            Image(systemName: forecast.condition.systemIconName)
-                .font(.title2)
-                .symbolRenderingMode(.multicolor)
-
-            Text("\(Int(forecast.temperature))°")
-                .font(.body)
                 .fontWeight(.semibold)
+                .foregroundStyle(.white.opacity(0.65))
+                .tracking(0.8)
 
-            if forecast.precipitationProbability > 0 {
-                Text("\(forecast.precipitationProbability)%")
-                    .font(.caption2)
-                    .foregroundStyle(.blue)
-            }
-        }
-        .padding()
-        .background(Color.secondary.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-    }
+            Rectangle()
+                .fill(.white.opacity(0.25))
+                .frame(height: 0.5)
 
-    // MARK: - Daily Forecast
-
-    @ViewBuilder
-    private var dailyForecastView: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("7-Day Forecast")
-                .font(.headline)
-
-            ForEach(viewModel.dailyForecast) { forecast in
-                dailyForecastRow(forecast)
-                if forecast.id != viewModel.dailyForecast.last?.id {
-                    Divider()
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 2) {
+                    ForEach(viewModel.hourlyForecast.prefix(24)) { forecast in
+                        hourlyItem(forecast)
+                    }
                 }
+                .padding(.horizontal, 2)
             }
         }
-        .padding()
-        .background(.ultraThinMaterial)
+        .padding(16)
+        .background(.white.opacity(0.14))
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
-    @ViewBuilder
-    private func dailyForecastRow(_ forecast: DailyForecast) -> some View {
-        HStack {
-            Text(forecast.date, style: .date)
-                .font(.subheadline)
-                .frame(width: 80, alignment: .leading)
+    private func hourlyItem(_ forecast: HourlyForecast) -> some View {
+        VStack(spacing: 7) {
+            Text(forecast.time, style: .time)
+                .font(.caption2)
+                .fontWeight(.medium)
+                .foregroundStyle(.white.opacity(0.75))
 
             Image(systemName: forecast.condition.systemIconName)
                 .font(.title3)
                 .symbolRenderingMode(.multicolor)
-                .frame(width: 30)
 
-            if forecast.precipitationProbability > 0 {
-                Text("\(forecast.precipitationProbability)%")
-                    .font(.caption)
-                    .foregroundStyle(.blue)
-                    .frame(width: 40)
-            } else {
-                Spacer()
-                    .frame(width: 40)
+            // Precipitation probability placeholder keeps layout stable
+            Text(forecast.precipitationProbability > 0 ? "\(forecast.precipitationProbability)%" : " ")
+                .font(.caption2)
+                .foregroundStyle(Color(red: 0.45, green: 0.82, blue: 1.0))
+
+            Text("\(Int(forecast.temperature))°")
+                .font(.callout)
+                .fontWeight(.semibold)
+                .foregroundStyle(.white)
+        }
+        .frame(width: 52)
+        .padding(.vertical, 8)
+    }
+
+    // MARK: - Daily Forecast Card
+
+    private var dailyForecastCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("7-DAY FORECAST", systemImage: "calendar")
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundStyle(.white.opacity(0.65))
+                .tracking(0.8)
+
+            Rectangle()
+                .fill(.white.opacity(0.25))
+                .frame(height: 0.5)
+
+            VStack(spacing: 0) {
+                ForEach(Array(viewModel.dailyForecast.enumerated()), id: \.element.id) { index, forecast in
+                    dailyRow(forecast, isToday: index == 0)
+                    if index < viewModel.dailyForecast.count - 1 {
+                        Rectangle()
+                            .fill(.white.opacity(0.15))
+                            .frame(height: 0.5)
+                            .padding(.vertical, 2)
+                    }
+                }
             }
+        }
+        .padding(16)
+        .background(.white.opacity(0.14))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+    }
+
+    private func dailyRow(_ forecast: DailyForecast, isToday: Bool) -> some View {
+        HStack(spacing: 10) {
+            Group {
+                if isToday {
+                    Text("Today")
+                } else {
+                    Text(forecast.date, format: .dateTime.weekday(.abbreviated))
+                }
+            }
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .foregroundStyle(.white)
+            .frame(width: 52, alignment: .leading)
+
+            Image(systemName: forecast.condition.systemIconName)
+                .symbolRenderingMode(.multicolor)
+                .font(.title3)
+                .frame(width: 28)
+
+            Text(forecast.precipitationProbability > 0 ? "\(forecast.precipitationProbability)%" : "")
+                .font(.caption)
+                .foregroundStyle(Color(red: 0.45, green: 0.82, blue: 1.0))
+                .frame(width: 34, alignment: .leading)
 
             Spacer()
 
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
                 Text("\(Int(forecast.temperatureLow))°")
-                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.55))
+                    .frame(width: 34, alignment: .trailing)
 
                 Text("\(Int(forecast.temperatureHigh))°")
+                    .font(.subheadline)
                     .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(width: 34, alignment: .trailing)
             }
         }
+        .padding(.vertical, 8)
     }
 
-    // MARK: - Empty & Error States
+    // MARK: - State Views
 
-    @ViewBuilder
-    private var emptyStateView: some View {
+    private var loadingView: some View {
         VStack(spacing: 16) {
+            ProgressView()
+                .progressViewStyle(.circular)
+                .tint(.white)
+                .scaleEffect(1.4)
+            Text("Loading weather…")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.75))
+        }
+        .padding(.top, 120)
+    }
+
+    private func errorView(_ message: String) -> some View {
+        VStack(spacing: 20) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 52))
+                .foregroundStyle(.yellow)
+
+            Text("Something went wrong")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundStyle(.white)
+
+            Text(message)
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.75))
+                .multilineTextAlignment(.center)
+
+            Button {
+                Task { await viewModel.loadWeatherForCurrentLocation() }
+            } label: {
+                Text("Try Again")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(.white.opacity(0.2))
+                    .clipShape(Capsule())
+            }
+        }
+        .padding(.top, 80)
+        .padding(.horizontal, 32)
+    }
+
+    private var emptyStateView: some View {
+        VStack(spacing: 20) {
             Image(systemName: "cloud.sun.fill")
-                .font(.system(size: 60))
+                .font(.system(size: 64))
                 .symbolRenderingMode(.multicolor)
 
             Text("No Weather Data")
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundStyle(.white)
 
-            Button("Load Weather") {
-                Task {
-                    await viewModel.loadWeatherForCurrentLocation()
-                }
+            Button {
+                Task { await viewModel.loadWeatherForCurrentLocation() }
+            } label: {
+                Text("Load Weather")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(.white.opacity(0.2))
+                    .clipShape(Capsule())
             }
-            .buttonStyle(.borderedProminent)
         }
-        .padding()
+        .padding(.top, 80)
     }
 
-    @ViewBuilder
-    private func errorView(_ message: String) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 60))
-                .foregroundStyle(.red)
+    // MARK: - Search Sheet
 
-            Text("Error")
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text(message)
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-
-            Button("Try Again") {
-                Task {
-                    await viewModel.loadWeatherForCurrentLocation()
-                }
-            }
-            .buttonStyle(.borderedProminent)
-        }
-        .padding()
-    }
-
-    // MARK: - Search View
-
-    @ViewBuilder
     private var searchView: some View {
         NavigationStack {
             List {
@@ -249,13 +421,15 @@ struct ContentView: View {
                             showingSearch = false
                         }
                     } label: {
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .leading, spacing: 3) {
                             Text(location.name)
                                 .font(.headline)
+                                .foregroundStyle(.primary)
                             Text(location.displayName)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
+                        .padding(.vertical, 4)
                     }
                 }
             }
@@ -263,15 +437,11 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search for a city")
             .onChange(of: searchText) { _, newValue in
-                Task {
-                    await viewModel.searchLocations(query: newValue)
-                }
+                Task { await viewModel.searchLocations(query: newValue) }
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        showingSearch = false
-                    }
+                    Button("Cancel") { showingSearch = false }
                 }
             }
         }

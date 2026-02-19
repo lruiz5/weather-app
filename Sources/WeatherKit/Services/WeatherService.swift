@@ -22,7 +22,7 @@ public actor WeatherService: WeatherServiceProtocol {
         let url = buildWeatherURL(
             latitude: latitude,
             longitude: longitude,
-            current: ["temperature_2m", "weather_code", "wind_speed_10m", "wind_direction_10m", "is_day"]
+            current: ["temperature_2m", "apparent_temperature", "weather_code", "wind_speed_10m", "wind_direction_10m", "is_day"]
         )
 
         let response: OpenMeteoResponse = try await fetchData(from: url)
@@ -31,9 +31,11 @@ public actor WeatherService: WeatherServiceProtocol {
             throw WeatherServiceError.missingData
         }
 
+        let formatter = datetimeFormatter(timezone: response.timezone)
+
         return Weather(
             temperature: current.temperature,
-            feelsLike: nil,
+            feelsLike: current.apparentTemperature,
             condition: WeatherCondition(wmoCode: current.weatherCode, isDay: current.isDay == 1),
             windSpeed: current.windSpeed,
             windDirection: current.windDirection,
@@ -41,7 +43,7 @@ public actor WeatherService: WeatherServiceProtocol {
             pressure: nil,
             visibility: nil,
             uvIndex: nil,
-            timestamp: ISO8601DateFormatter().date(from: current.time) ?? Date(),
+            timestamp: formatter.date(from: current.time) ?? Date(),
             isDay: current.isDay == 1
         )
     }
@@ -51,7 +53,7 @@ public actor WeatherService: WeatherServiceProtocol {
             latitude: latitude,
             longitude: longitude,
             hourly: ["temperature_2m", "weather_code", "precipitation", "precipitation_probability"],
-            forecastDays: 7
+            forecastDays: 2
         )
 
         let response: OpenMeteoResponse = try await fetchData(from: url)
@@ -60,13 +62,14 @@ public actor WeatherService: WeatherServiceProtocol {
             throw WeatherServiceError.missingData
         }
 
-        let dateFormatter = ISO8601DateFormatter()
+        let formatter = datetimeFormatter(timezone: response.timezone)
+        let now = Date()
         let count = min(hours, hourly.time.count)
 
         return (0..<count).compactMap { index in
-            guard let date = dateFormatter.date(from: hourly.time[index]) else {
-                return nil
-            }
+            guard let date = formatter.date(from: hourly.time[index]) else { return nil }
+            // Skip hours in the past
+            guard date >= now.addingTimeInterval(-3600) else { return nil }
 
             return HourlyForecast(
                 time: date,
@@ -82,7 +85,7 @@ public actor WeatherService: WeatherServiceProtocol {
         let url = buildWeatherURL(
             latitude: latitude,
             longitude: longitude,
-            daily: ["weather_code", "temperature_2m_max", "temperature_2m_min", "precipitation_sum", "precipitation_probability_max"],
+            daily: ["weather_code", "temperature_2m_max", "temperature_2m_min", "precipitation_sum", "precipitation_probability_max", "sunrise", "sunset"],
             forecastDays: days
         )
 
@@ -92,12 +95,14 @@ public actor WeatherService: WeatherServiceProtocol {
             throw WeatherServiceError.missingData
         }
 
-        let dateFormatter = ISO8601DateFormatter()
+        let dateFormatter = dateOnlyFormatter(timezone: response.timezone)
+        let sunFormatter = datetimeFormatter(timezone: response.timezone)
 
         return (0..<daily.time.count).compactMap { index in
-            guard let date = dateFormatter.date(from: daily.time[index]) else {
-                return nil
-            }
+            guard let date = dateFormatter.date(from: daily.time[index]) else { return nil }
+
+            let sunrise = index < daily.sunrise.count ? sunFormatter.date(from: daily.sunrise[index]) : nil
+            let sunset = index < daily.sunset.count ? sunFormatter.date(from: daily.sunset[index]) : nil
 
             return DailyForecast(
                 date: date,
@@ -105,7 +110,9 @@ public actor WeatherService: WeatherServiceProtocol {
                 temperatureHigh: daily.temperatureMax[index],
                 temperatureLow: daily.temperatureMin[index],
                 precipitation: daily.precipitationSum[index],
-                precipitationProbability: daily.precipitationProbabilityMax[index]
+                precipitationProbability: daily.precipitationProbabilityMax[index],
+                sunrise: sunrise,
+                sunset: sunset
             )
         }
     }
@@ -155,17 +162,31 @@ public actor WeatherService: WeatherServiceProtocol {
         if let current = current {
             queryItems.append(URLQueryItem(name: "current", value: current.joined(separator: ",")))
         }
-
         if let hourly = hourly {
             queryItems.append(URLQueryItem(name: "hourly", value: hourly.joined(separator: ",")))
         }
-
         if let daily = daily {
             queryItems.append(URLQueryItem(name: "daily", value: daily.joined(separator: ",")))
         }
 
         components.queryItems = queryItems
         return components.url!
+    }
+
+    /// Formatter for "yyyy-MM-dd'T'HH:mm" strings (current time, hourly times, sunrise/sunset)
+    private func datetimeFormatter(timezone: String) -> DateFormatter {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        f.timeZone = TimeZone(identifier: timezone) ?? .current
+        return f
+    }
+
+    /// Formatter for "yyyy-MM-dd" strings (daily dates)
+    private func dateOnlyFormatter(timezone: String) -> DateFormatter {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        f.timeZone = TimeZone(identifier: timezone) ?? .current
+        return f
     }
 
     private func fetchData<T: Decodable>(from url: URL) async throws -> T {
@@ -180,8 +201,7 @@ public actor WeatherService: WeatherServiceProtocol {
         }
 
         do {
-            let decoder = JSONDecoder()
-            return try decoder.decode(T.self, from: data)
+            return try JSONDecoder().decode(T.self, from: data)
         } catch {
             throw WeatherServiceError.decodingError(error)
         }
