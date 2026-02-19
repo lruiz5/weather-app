@@ -117,11 +117,14 @@ struct ContentView: View {
                     .shadow(color: .black.opacity(0.15), radius: 6, y: 3)
                     .padding(.bottom, 4)
 
-                // Temperature
-                Text("\(Int(weather.temperature))°")
+                // Temperature (tap to toggle °C/°F)
+                Text(viewModel.displayTemperature(weather.temperature))
                     .font(.system(size: 96, weight: .thin))
                     .foregroundStyle(.white)
                     .padding(.bottom, 2)
+                    .onTapGesture {
+                        viewModel.toggleTemperatureUnit()
+                    }
 
                 // Condition
                 Text(weather.condition.description)
@@ -133,16 +136,16 @@ struct ContentView: View {
                 // Feels like + H/L
                 HStack(spacing: 6) {
                     if let feelsLike = weather.feelsLike {
-                        Text("Feels like \(Int(feelsLike))°")
+                        Text("Feels like \(viewModel.displayTemperature(feelsLike))")
                             .foregroundStyle(.white.opacity(0.85))
                     }
                     if let today = viewModel.dailyForecast.first {
                         if weather.feelsLike != nil {
                             Text("·").foregroundStyle(.white.opacity(0.45))
                         }
-                        Text("H:\(Int(today.temperatureHigh))°")
+                        Text("H:\(viewModel.displayTemperature(today.temperatureHigh))")
                             .foregroundStyle(.white.opacity(0.85))
-                        Text("L:\(Int(today.temperatureLow))°")
+                        Text("L:\(viewModel.displayTemperature(today.temperatureLow))")
                             .foregroundStyle(.white.opacity(0.85))
                     }
                 }
@@ -204,8 +207,6 @@ struct ContentView: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 28)
         .frame(maxWidth: .infinity)
-        .background(.white.opacity(0.14))
-        .clipShape(RoundedRectangle(cornerRadius: 24))
     }
 
     // MARK: - Hourly Forecast Card
@@ -224,7 +225,7 @@ struct ContentView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 2) {
-                    ForEach(viewModel.hourlyForecast.prefix(24)) { forecast in
+                    ForEach(viewModel.hourlyForecast.prefix(12)) { forecast in
                         hourlyItem(forecast)
                     }
                 }
@@ -238,7 +239,7 @@ struct ContentView: View {
 
     private func hourlyItem(_ forecast: HourlyForecast) -> some View {
         VStack(spacing: 7) {
-            Text(forecast.time, style: .time)
+            Text(forecast.time, format: .dateTime.hour(.defaultDigits(amPM: .abbreviated)))
                 .font(.caption2)
                 .fontWeight(.medium)
                 .foregroundStyle(.white.opacity(0.75))
@@ -252,7 +253,7 @@ struct ContentView: View {
                 .font(.caption2)
                 .foregroundStyle(Color(red: 0.45, green: 0.82, blue: 1.0))
 
-            Text("\(Int(forecast.temperature))°")
+            Text(viewModel.displayTemperature(forecast.temperature))
                 .font(.callout)
                 .fontWeight(.semibold)
                 .foregroundStyle(.white)
@@ -319,12 +320,12 @@ struct ContentView: View {
             Spacer()
 
             HStack(spacing: 10) {
-                Text("\(Int(forecast.temperatureLow))°")
+                Text(viewModel.displayTemperature(forecast.temperatureLow))
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.55))
                     .frame(width: 34, alignment: .trailing)
 
-                Text("\(Int(forecast.temperatureHigh))°")
+                Text(viewModel.displayTemperature(forecast.temperatureHigh))
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
