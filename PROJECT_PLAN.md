@@ -315,6 +315,10 @@ We need a free weather API with:
 ✅ Location name resolution fixed (reverse geocoding)
 ✅ Hourly and daily forecast views
 ✅ City search functionality
+✅ Tap-to-toggle °C/°F temperature units
+✅ Rolling 12-hour hourly forecast (was fixed at 24h ending at 11 PM)
+✅ Simplified hourly time display (hour only, no :00)
+✅ Transparent background on main location card
 
 ### Next Immediate Steps:
 1. Create widget extensions (Home Screen, Lock Screen)
@@ -343,3 +347,5 @@ We need a free weather API with:
 | SPM | Native dependency management, modular architecture | 2024-02-13 |
 | Open-Meteo API | Free, no API key, excellent rate limits, full feature set | 2026-02-18 |
 | Full-screen UI redesign | Modern immersive weather display | 2026-02-18 |
+| °C/°F toggle via tap | Simple UX, no settings screen needed | 2026-02-19 |
+| Rolling 12h hourly forecast | More relevant than fixed midnight-to-11PM | 2026-02-19 |

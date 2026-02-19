@@ -14,6 +14,16 @@ public final class WeatherViewModel {
     public private(set) var searchResults: [Location] = []
     public private(set) var isLoading = false
     public private(set) var errorMessage: String?
+    public var useFahrenheit = false
+
+    public func toggleTemperatureUnit() {
+        useFahrenheit.toggle()
+    }
+
+    public func displayTemperature(_ celsius: Double) -> String {
+        let value = useFahrenheit ? (celsius * 9/5) + 32 : celsius
+        return "\(Int(value))°"
+    }
 
     // MARK: - Dependencies
     private let repository: WeatherRepositoryProtocol

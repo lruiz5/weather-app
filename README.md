@@ -6,7 +6,8 @@ A modern iOS weather application built with Swift 6.0, featuring clean architect
 
 - ✅ Real-time weather data from Open-Meteo API (free, no API key required)
 - ✅ Current weather conditions with temperature, wind speed, and weather icons
-- ✅ Hourly forecast (24 hours)
+- ✅ Tap-to-toggle °C/°F temperature units
+- ✅ Hourly forecast (rolling 12 hours)
 - ✅ 7-day daily forecast
 - ✅ Location-based weather using GPS
 - ✅ City search with autocomplete

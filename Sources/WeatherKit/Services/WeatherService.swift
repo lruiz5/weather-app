@@ -64,9 +64,8 @@ public actor WeatherService: WeatherServiceProtocol {
 
         let formatter = datetimeFormatter(timezone: response.timezone)
         let now = Date()
-        let count = min(hours, hourly.time.count)
 
-        return (0..<count).compactMap { index in
+        let futureForecasts = (0..<hourly.time.count).compactMap { index -> HourlyForecast? in
             guard let date = formatter.date(from: hourly.time[index]) else { return nil }
             // Skip hours in the past
             guard date >= now.addingTimeInterval(-3600) else { return nil }
@@ -79,6 +78,8 @@ public actor WeatherService: WeatherServiceProtocol {
                 precipitationProbability: hourly.precipitationProbability[index]
             )
         }
+
+        return Array(futureForecasts.prefix(hours))
     }
 
     public func getDailyForecast(latitude: Double, longitude: Double, days: Int = 7) async throws -> [DailyForecast] {
