@@ -297,7 +297,7 @@ We need a free weather API with:
 
 ---
 
-## Current Status: Phase 1
+## Current Status: Phase 3 (UI Development)
 
 ### Completed:
 ✅ Project structure initialized
@@ -305,17 +305,27 @@ We need a free weather API with:
 ✅ Clean architecture scaffolding
 ✅ CLAUDE.md project context
 ✅ Development plan created
+✅ Weather API selected (Open-Meteo - free, no API key)
+✅ Xcode project created
+✅ Core domain models implemented (Weather, Forecast, Location)
+✅ Networking layer built (Open-Meteo API integration)
+✅ WeatherService with async/await
+✅ WeatherViewModel with @Observable
+✅ Main UI redesigned (full-screen display, modern SwiftUI)
+✅ Location name resolution fixed (reverse geocoding)
+✅ Hourly and daily forecast views
+✅ City search functionality
 
 ### Next Immediate Steps:
-1. **Choose weather API** (needs decision)
-2. Create Xcode project (requires Xcode installation)
-3. Implement core domain models
-4. Build networking layer
-5. Create initial UI
+1. Create widget extensions (Home Screen, Lock Screen)
+2. Implement Live Activities for weather alerts
+3. Add unit tests for domain layer
+4. Polish UI animations and transitions
+5. iPad support
 
-### Questions to Answer:
-- [ ] Which weather API should we use? (Recommend Open-Meteo)
-- [ ] Target only iOS 18+ or support iOS 17?
+### Decisions Made:
+- [x] Weather API: Open-Meteo (free, no key required)
+- [x] Target iOS 18+ only
 - [ ] Include iPad support from start?
 - [ ] Preferred color scheme/design direction?
 - [ ] Any specific widget features priority?
@@ -331,3 +341,5 @@ We need a free weather API with:
 | Clean Architecture | Testability, maintainability, separation of concerns | 2024-02-13 |
 | SwiftUI | Modern declarative UI, widget support | 2024-02-13 |
 | SPM | Native dependency management, modular architecture | 2024-02-13 |
+| Open-Meteo API | Free, no API key, excellent rate limits, full feature set | 2026-02-18 |
+| Full-screen UI redesign | Modern immersive weather display | 2026-02-18 |

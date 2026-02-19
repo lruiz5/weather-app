@@ -1,5 +1,3 @@
-.blackboxcli/
-
 # Xcode
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
