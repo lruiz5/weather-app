@@ -27,6 +27,7 @@ struct OpenMeteoResponse: Codable, Sendable {
 struct CurrentWeather: Codable, Sendable {
     let time: String
     let temperature: Double
+    let apparentTemperature: Double
     let weatherCode: Int
     let windSpeed: Double
     let windDirection: Int
@@ -35,6 +36,7 @@ struct CurrentWeather: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case time
         case temperature = "temperature_2m"
+        case apparentTemperature = "apparent_temperature"
         case weatherCode = "weather_code"
         case windSpeed = "wind_speed_10m"
         case windDirection = "wind_direction_10m"
@@ -67,6 +69,8 @@ struct DailyWeather: Codable, Sendable {
     let temperatureMin: [Double]
     let precipitationSum: [Double]
     let precipitationProbabilityMax: [Int]
+    let sunrise: [String]
+    let sunset: [String]
 
     enum CodingKeys: String, CodingKey {
         case time
@@ -75,5 +79,7 @@ struct DailyWeather: Codable, Sendable {
         case temperatureMin = "temperature_2m_min"
         case precipitationSum = "precipitation_sum"
         case precipitationProbabilityMax = "precipitation_probability_max"
+        case sunrise
+        case sunset
     }
 }

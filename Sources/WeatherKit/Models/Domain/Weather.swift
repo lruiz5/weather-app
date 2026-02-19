@@ -83,6 +83,8 @@ public struct DailyForecast: Sendable, Identifiable {
     public let temperatureLow: Double
     public let precipitation: Double
     public let precipitationProbability: Int
+    public let sunrise: Date?
+    public let sunset: Date?
 
     public var temperatureHighFahrenheit: Double {
         (temperatureHigh * 9/5) + 32
@@ -98,7 +100,9 @@ public struct DailyForecast: Sendable, Identifiable {
         temperatureHigh: Double,
         temperatureLow: Double,
         precipitation: Double,
-        precipitationProbability: Int
+        precipitationProbability: Int,
+        sunrise: Date? = nil,
+        sunset: Date? = nil
     ) {
         self.date = date
         self.condition = condition
@@ -106,6 +110,8 @@ public struct DailyForecast: Sendable, Identifiable {
         self.temperatureLow = temperatureLow
         self.precipitation = precipitation
         self.precipitationProbability = precipitationProbability
+        self.sunrise = sunrise
+        self.sunset = sunset
     }
 }
 

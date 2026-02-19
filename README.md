@@ -94,7 +94,6 @@ This app uses the **Open-Meteo API** (https://open-meteo.com/):
 
 ## Known Issues
 
-- City name display for current location may show "Current Location" instead of actual city name
 - Requires manual location search for best results
 
 ## Future Enhancements

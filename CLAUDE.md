@@ -121,10 +121,10 @@ Sources/
 ## Next Steps
 
 1. ✅ Initialize project structure
-2. ⏳ Select weather API
-3. ⏳ Design app architecture
-4. ⏳ Implement core networking layer
-5. ⏳ Build UI components
+2. ✅ Select weather API (Open-Meteo - free, no API key)
+3. ✅ Design app architecture
+4. ✅ Implement core networking layer
+5. ✅ Build UI components (redesigned with full-screen display)
 6. ⏳ Create widget extensions
 7. ⏳ Testing & polish
 
