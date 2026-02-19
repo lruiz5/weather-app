@@ -22,7 +22,7 @@ public actor WeatherService: WeatherServiceProtocol {
         let url = buildWeatherURL(
             latitude: latitude,
             longitude: longitude,
-            current: ["temperature_2m", "apparent_temperature", "weather_code", "wind_speed_10m", "wind_direction_10m", "is_day"]
+            current: ["temperature_2m", "apparent_temperature", "weather_code", "wind_speed_10m", "wind_direction_10m", "is_day", "relative_humidity_2m", "surface_pressure", "visibility", "uv_index"]
         )
 
         let response: OpenMeteoResponse = try await fetchData(from: url)
@@ -39,10 +39,10 @@ public actor WeatherService: WeatherServiceProtocol {
             condition: WeatherCondition(wmoCode: current.weatherCode, isDay: current.isDay == 1),
             windSpeed: current.windSpeed,
             windDirection: current.windDirection,
-            humidity: nil,
-            pressure: nil,
-            visibility: nil,
-            uvIndex: nil,
+            humidity: current.relativeHumidity.map { Double($0) },
+            pressure: current.surfacePressure,
+            visibility: current.visibility,
+            uvIndex: current.uvIndex,
             timestamp: formatter.date(from: current.time) ?? Date(),
             isDay: current.isDay == 1
         )

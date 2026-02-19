@@ -32,6 +32,10 @@ struct CurrentWeather: Codable, Sendable {
     let windSpeed: Double
     let windDirection: Int
     let isDay: Int
+    let relativeHumidity: Int?
+    let surfacePressure: Double?
+    let visibility: Double?
+    let uvIndex: Double?
 
     enum CodingKeys: String, CodingKey {
         case time
@@ -41,6 +45,10 @@ struct CurrentWeather: Codable, Sendable {
         case windSpeed = "wind_speed_10m"
         case windDirection = "wind_direction_10m"
         case isDay = "is_day"
+        case relativeHumidity = "relative_humidity_2m"
+        case surfacePressure = "surface_pressure"
+        case visibility
+        case uvIndex = "uv_index"
     }
 }
 
