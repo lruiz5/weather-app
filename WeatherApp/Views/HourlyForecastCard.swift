@@ -36,7 +36,7 @@ struct HourlyForecastCard: View {
                 .fontWeight(.medium)
                 .foregroundStyle(.white.opacity(0.75))
 
-            Image(systemName: forecast.condition.systemIconName)
+            Image(systemName: forecast.condition.iconName(isDay: forecast.isDay))
                 .font(.title3)
                 .symbolRenderingMode(.multicolor)
 

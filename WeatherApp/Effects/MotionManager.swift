@@ -16,7 +16,7 @@ final class MotionManager {
 
         nonisolated(unsafe) let cm = motionManager
         let stream = AsyncStream<(Double, Double)> { continuation in
-            cm.startDeviceMotionUpdates(to: OperationQueue()) { motion, _ in
+            cm.startDeviceMotionUpdates(to: .main) { motion, _ in
                 guard let motion else { return }
                 continuation.yield((motion.attitude.pitch, motion.attitude.roll))
             }

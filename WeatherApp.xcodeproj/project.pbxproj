@@ -26,6 +26,7 @@
 		546EF72A2F47904A00895A24 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF70A2F47904A00895A24 /* GradientBackground.swift */; };
 		546EF72B2F47904A00895A24 /* FrostedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7092F47904A00895A24 /* FrostedCard.swift */; };
 		546EF72C2F47904A00895A24 /* SplineInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF7042F47904A00895A24 /* SplineInterpolation.swift */; };
+		546EF72E2F48F09C00895A24 /* CelestialClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EF72D2F48F09C00895A24 /* CelestialClockView.swift */; };
 		5472992B2F40636C00281F8D /* WeatherKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5472992A2F40636C00281F8D /* WeatherKit */; };
 		5472992D2F40636C00281F8D /* WeatherUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5472992C2F40636C00281F8D /* WeatherUI */; };
 		A1000001000000000000001 /* WeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000000000000011 /* WeatherApp.swift */; };
@@ -53,6 +54,7 @@
 		546EF7162F47904A00895A24 /* HourlyForecastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCard.swift; sourceTree = "<group>"; };
 		546EF7172F47904A00895A24 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		546EF7182F47904A00895A24 /* StateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViews.swift; sourceTree = "<group>"; };
+		546EF72D2F48F09C00895A24 /* CelestialClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CelestialClockView.swift; sourceTree = "<group>"; };
 		A1000001000000000000010 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000001000000000000011 /* WeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApp.swift; sourceTree = "<group>"; };
 		A1000001000000000000012 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		546EF70D2F47904A00895A24 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				546EF72D2F48F09C00895A24 /* CelestialClockView.swift */,
 				546EF7072F47904A00895A24 /* DetailGaugeView.swift */,
 				546EF7082F47904A00895A24 /* ExpandableDetailCard.swift */,
 				546EF7092F47904A00895A24 /* FrostedCard.swift */,
@@ -228,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				546EF72E2F48F09C00895A24 /* CelestialClockView.swift in Sources */,
 				546EF71A2F47904A00895A24 /* ScrubberBubbleView.swift in Sources */,
 				546EF71B2F47904A00895A24 /* ParticleSystem.swift in Sources */,
 				546EF71C2F47904A00895A24 /* SunArcView.swift in Sources */,

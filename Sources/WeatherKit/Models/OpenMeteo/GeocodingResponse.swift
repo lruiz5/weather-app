@@ -36,7 +36,8 @@ struct GeocodingLocation: Codable, Sendable {
             latitude: latitude,
             longitude: longitude,
             country: country,
-            admin1: admin1
+            admin1: admin1,
+            timezone: timezone
         )
     }
 }

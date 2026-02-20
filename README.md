@@ -1,18 +1,22 @@
 # WeatherApp
 
-A modern iOS weather application built with Swift 6.0, featuring clean architecture and real-time weather data.
+A modern iOS weather application built with Swift 6.0, featuring a celestial clock interface, animated weather effects, and real-time weather data.
 
 ## Features
 
 - ✅ Real-time weather data from Open-Meteo API (free, no API key required)
+- ✅ **Celestial clock** — 24-hour sun/moon circle showing time of day at a glance
 - ✅ Current weather conditions with temperature, wind speed, and weather icons
 - ✅ Tap-to-toggle °C/°F temperature units
-- ✅ Hourly forecast (rolling 12 hours)
+- ✅ Hourly forecast (rolling 12 hours, horizontal scroll)
 - ✅ 7-day daily forecast
 - ✅ Location-based weather using GPS
-- ✅ City search with autocomplete
-- ✅ Clean, modern SwiftUI interface
-- ✅ Support for multiple locations
+- ✅ City search with autocomplete (timezone-aware display)
+- ✅ **Animated weather effects** — rain, snow, fog, and thunder particles
+- ✅ **Animated gradient backgrounds** — MeshGradient that adapts to weather conditions
+- ✅ **CoreMotion parallax** — subtle tilt effect across visual layers
+- ✅ **Expandable detail cards** — UV index, humidity, pressure, visibility gauges
+- ✅ Day/night-aware icons throughout the UI
 - 🚧 Widgets (planned)
 - 🚧 Live Activities (planned)
 
@@ -21,19 +25,19 @@ A modern iOS weather application built with Swift 6.0, featuring clean architect
 This project follows Clean Architecture principles with modular design:
 
 - **WeatherKit** (SPM Module): Core domain logic, models, services, and repositories
-  - Domain models (Weather, Location, Forecasts)
+  - Domain models (Weather, Location with timezone, Forecasts)
   - Weather service (Open-Meteo API integration)
   - Repository pattern for data access
-  
+
 - **WeatherUI** (SPM Module): SwiftUI views and view models
   - WeatherViewModel with @Observable macro
   - LocationManager for GPS access
-  - Reusable UI components
 
 - **WeatherApp** (Main Target): iOS application
-  - App entry point
-  - ContentView with weather display
-  - Info.plist configuration
+  - `Views/` — Screen-level views (CurrentWeather, Search, Daily, state views)
+  - `Components/` — CelestialClockView, FrostedCard, ExpandableDetailCard, Gauges
+  - `Charts/` — Temperature curve, spline interpolation, scrubber
+  - `Effects/` — Weather particles, animated gradients, motion/parallax
 
 ## Requirements
 
@@ -55,12 +59,14 @@ weather-app/
 │   │   ├── Services/                # Weather API service
 │   │   └── Repositories/            # Data repositories
 │   └── WeatherUI/                   # UI module
-│       ├── ViewModels/              # View models
-│       ├── Views/                   # SwiftUI views
-│       └── Components/              # Reusable components
+│       └── ViewModels/              # View models
 ├── WeatherApp/                      # Main app target
 │   ├── WeatherApp.swift             # App entry point
 │   ├── ContentView.swift            # Main view
+│   ├── Views/                       # Screen-level views
+│   ├── Components/                  # Reusable UI components
+│   ├── Charts/                      # Data visualization
+│   ├── Effects/                     # Visual effects
 │   ├── Info.plist                   # App configuration
 │   └── Assets.xcassets/             # App assets
 └── WeatherApp.xcodeproj/            # Xcode project
@@ -77,11 +83,11 @@ weather-app/
 ## API Integration
 
 This app uses the **Open-Meteo API** (https://open-meteo.com/):
-- ✅ Completely free, no API key required
-- ✅ No rate limits for reasonable use
-- ✅ Provides current weather, hourly, and daily forecasts
-- ✅ Geocoding for location search
-- ✅ WMO weather codes for conditions
+- Completely free, no API key required
+- No rate limits for reasonable use
+- Provides current weather, hourly, and daily forecasts
+- Geocoding for location search with timezone data
+- WMO weather codes for conditions
 
 ## Technical Highlights
 
@@ -89,13 +95,13 @@ This app uses the **Open-Meteo API** (https://open-meteo.com/):
 - **SwiftUI** with @Observable macro (iOS 17+)
 - **Async/await** for all network operations
 - **Actor isolation** for thread-safe services
+- **Canvas rendering** for custom celestial clock and weather particles
+- **MeshGradient** for adaptive animated backgrounds
+- **CoreMotion** parallax tilt effects
+- **TimelineView** for real-time clock and particle updates
 - **Protocol-oriented design** for testability
 - **Clean Architecture** with clear separation of concerns
-- **No external dependencies** - pure Swift and SwiftUI
-
-## Known Issues
-
-- Requires manual location search for best results
+- **No external dependencies** — pure Swift and SwiftUI
 
 ## Future Enhancements
 
@@ -104,7 +110,6 @@ This app uses the **Open-Meteo API** (https://open-meteo.com/):
 - [ ] Live Activities for weather alerts
 - [ ] Weather radar/maps
 - [ ] Precipitation notifications
-- [ ] Dark mode optimizations
 - [ ] iPad support
 - [ ] Unit and UI tests
 

@@ -132,8 +132,9 @@ WeatherApp/
 5. ✅ Build UI components (redesigned with full-screen display)
 6. ✅ UI improvements (°C/°F toggle, rolling 12h forecast, cleaner time display)
 7. ✅ Visual overhaul (particles, animated gradients, spline chart, sun arc, expandable cards, parallax)
-8. ⏳ Create widget extensions
-9. ⏳ Testing & polish
+8. ✅ Celestial clock (24-hour sun/moon circle, timezone-aware for searched cities, simple hourly scroll list)
+9. ⏳ Create widget extensions
+10. ⏳ Testing & polish
 
 ## Notes
 

@@ -6,7 +6,7 @@ struct TemperatureCurveView: View {
     let forecasts: [HourlyForecast]
     let displayTemperature: (Double) -> String
 
-    private let pointSpacing: CGFloat = 52
+    private let pointSpacing: CGFloat = 28
     private let chartHeight: CGFloat = 120
     private let precipBarHeight: CGFloat = 40
     private let verticalPadding: CGFloat = 30
@@ -200,15 +200,13 @@ struct TemperatureCurveView: View {
 
     private var timeLabels: some View {
         ForEach(Array(displayForecasts.enumerated()), id: \.element.id) { index, forecast in
-            if index % 2 == 0 {
-                Text(forecast.time, format: .dateTime.hour(.defaultDigits(amPM: .abbreviated)))
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
-                    .position(
-                        x: CGFloat(index) * pointSpacing + pointSpacing / 2,
-                        y: chartHeight + verticalPadding * 2 - 2
-                    )
-            }
+            Text(forecast.time, format: .dateTime.hour(.defaultDigits(amPM: .abbreviated)))
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.6))
+                .position(
+                    x: CGFloat(index) * pointSpacing + pointSpacing / 2,
+                    y: chartHeight + verticalPadding * 2 - 2
+                )
         }
     }
 
