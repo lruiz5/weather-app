@@ -52,7 +52,7 @@ public actor WeatherService: WeatherServiceProtocol {
         let url = buildWeatherURL(
             latitude: latitude,
             longitude: longitude,
-            hourly: ["temperature_2m", "weather_code", "precipitation", "precipitation_probability"],
+            hourly: ["temperature_2m", "weather_code", "precipitation", "precipitation_probability", "is_day"],
             forecastDays: 2
         )
 
@@ -73,9 +73,10 @@ public actor WeatherService: WeatherServiceProtocol {
             return HourlyForecast(
                 time: date,
                 temperature: hourly.temperature[index],
-                condition: WeatherCondition(wmoCode: hourly.weatherCode[index]),
+                condition: WeatherCondition(wmoCode: hourly.weatherCode[index], isDay: hourly.isDay[index] == 1),
                 precipitation: hourly.precipitation[index],
-                precipitationProbability: hourly.precipitationProbability[index]
+                precipitationProbability: hourly.precipitationProbability[index],
+                isDay: hourly.isDay[index] == 1
             )
         }
 

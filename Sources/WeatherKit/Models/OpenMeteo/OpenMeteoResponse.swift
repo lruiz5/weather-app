@@ -59,6 +59,7 @@ struct HourlyWeather: Codable, Sendable {
     let weatherCode: [Int]
     let precipitation: [Double]
     let precipitationProbability: [Int]
+    let isDay: [Int]
 
     enum CodingKeys: String, CodingKey {
         case time
@@ -66,6 +67,7 @@ struct HourlyWeather: Codable, Sendable {
         case weatherCode = "weather_code"
         case precipitation
         case precipitationProbability = "precipitation_probability"
+        case isDay = "is_day"
     }
 }
 

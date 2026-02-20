@@ -12,7 +12,7 @@ struct ScrubberBubbleView: View {
                 .font(.caption2)
                 .fontWeight(.medium)
 
-            Image(systemName: forecast.condition.systemIconName)
+            Image(systemName: forecast.condition.iconName(isDay: forecast.isDay))
                 .font(.body)
                 .symbolRenderingMode(.multicolor)
 

@@ -54,6 +54,7 @@ public struct HourlyForecast: Sendable, Identifiable {
     public let condition: WeatherCondition
     public let precipitation: Double
     public let precipitationProbability: Int
+    public let isDay: Bool
 
     public var temperatureFahrenheit: Double {
         (temperature * 9/5) + 32
@@ -64,13 +65,15 @@ public struct HourlyForecast: Sendable, Identifiable {
         temperature: Double,
         condition: WeatherCondition,
         precipitation: Double,
-        precipitationProbability: Int
+        precipitationProbability: Int,
+        isDay: Bool = true
     ) {
         self.time = time
         self.temperature = temperature
         self.condition = condition
         self.precipitation = precipitation
         self.precipitationProbability = precipitationProbability
+        self.isDay = isDay
     }
 }
 
@@ -162,11 +165,15 @@ public enum WeatherCondition: Sendable {
     }
 
     public var systemIconName: String {
+        iconName(isDay: true)
+    }
+
+    public func iconName(isDay: Bool) -> String {
         switch self {
         case .clear:
-            return "sun.max.fill"
+            return isDay ? "sun.max.fill" : "moon.stars.fill"
         case .partlyCloudy:
-            return "cloud.sun.fill"
+            return isDay ? "cloud.sun.fill" : "cloud.moon.fill"
         case .cloudy:
             return "cloud.fill"
         case .overcast:
@@ -228,6 +235,7 @@ public struct Location: Sendable, Identifiable {
     public let longitude: Double
     public let country: String?
     public let admin1: String?
+    public let timezone: String?
 
     public var displayName: String {
         var parts: [String] = [name]
@@ -245,12 +253,14 @@ public struct Location: Sendable, Identifiable {
         latitude: Double,
         longitude: Double,
         country: String? = nil,
-        admin1: String? = nil
+        admin1: String? = nil,
+        timezone: String? = nil
     ) {
         self.name = name
         self.latitude = latitude
         self.longitude = longitude
         self.country = country
         self.admin1 = admin1
+        self.timezone = timezone
     }
 }

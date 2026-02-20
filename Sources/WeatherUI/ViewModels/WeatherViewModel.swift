@@ -54,7 +54,8 @@ public final class WeatherViewModel {
                 latitude: coordinate.latitude,
                 longitude: coordinate.longitude,
                 country: placemark?.country,
-                admin1: placemark?.administrativeArea
+                admin1: placemark?.administrativeArea,
+                timezone: placemark?.timeZone?.identifier
             )
 
             currentLocation = location

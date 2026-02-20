@@ -38,10 +38,7 @@ struct ContentView: View {
                     } else if let currentWeather = weather {
                         CurrentWeatherView(viewModel: viewModel)
                         if !viewModel.hourlyForecast.isEmpty {
-                            TemperatureCurveView(
-                                forecasts: viewModel.hourlyForecast,
-                                displayTemperature: viewModel.displayTemperature
-                            )
+                            HourlyForecastCard(viewModel: viewModel)
                         }
                         ExpandableDetailCard(weather: currentWeather)
                         if !viewModel.dailyForecast.isEmpty {
